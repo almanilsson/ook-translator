@@ -1,4 +1,78 @@
-## Ook Translator
-This repository contains code for translating text between human language and orangutan language (from Discworld). The script can translate in both directions and is written in Python.
+# ook-translator
+Ook Translator is a Python tool that converts text between human language and the Librarian's “Ook”-based orangutan language from Terry Pratchett's Discworld.
 
-The code uses a set of predefined mappings between English letters and “ook" syllables. You can change the input file and language in the script itself. Example files are included.
+Each letter in human text is mapped to a specific “Ook” sound group. Translation from human to orangutan has a direct mappings, but translation in the other direction is trickier as several “Ook” combinations can map to the same letter (like genetic codons mapping to amino acids).
+
+To handle this, the translator generates all possible human words for each “Ook” sequence and compares them against an English dictionary (via [`wordfreq`](https://pypi.org/project/wordfreq/)) to identify real words.
+
+## Mapping of human sounds to orangutan sound groups
+
+| Human Letters | Ook Sound   |
+|----------------|------------|
+| A, O, U        | ok         |
+| B, P           | ook        |
+| C, S, Z        | okk        |
+| D, T           | Ok         |
+| E, I, Y        | oK         |
+| F, V, W        | ookk       |
+| G, K, Q, X     | OK         |
+| H              | Ookk       |
+| J              | oOkk       |
+| L              | oOKk       |
+| M, N           | OokK       |
+| R              | oOkK       |
+
+## Installation
+
+**Requirements:**
+- Python ≥ 3.9  
+- [`wordfreq`](https://pypi.org/project/wordfreq/)
+
+Clone the repository and install dependencies.
+
+## Usage
+
+### Translate from human to orangutan
+
+Uncomment the section at the end of the script which calls the human translation function, fill in the filename, and run the script.
+```python
+human("<YOURFILE>.txt")
+```
+
+### Translate orangutan to human
+
+Uncomment the section at the end of the script which calls the orangutan translation function, fill in the filename, and run the script.
+```python
+orangutang("<YOURFILE>.txt")
+```
+
+Translated files are saved in the same directory as the input with `_translated.txt` appended to the filename.
+
+## Example
+
+**Input (human):**
+
+```
+Hello world!
+```
+
+**Output (Orangutan):**
+
+```
+OokkoKoOKkoOKkok ookkokoOkKoOKkOk
+```
+
+## Licence
+
+This project is licensed under the [MIT License](./LICENSE).
+
+## Citing this resource
+
+If you use or adapt ook translator, please cite it as:
+
+*Nilsson, A. (2025). *ook translator* (v0.1.0) [Software]. SciLifeLab. Available at: [https://github.com/almanilsson/ook-translator](https://github.com/almanilsson/ook-translator). Licensed under MIT.*
+
+
+## Acknowledgements
+
+Developed as part of the **Open Source Software for Research – Sharing Code and Software the Right Way** Workshop (DDLS 2025). 
