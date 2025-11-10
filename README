@@ -1,0 +1,4 @@
+## Ook Translator
+This repository contains code for translating text between human language and orangutan language (from Discworld). The script can translate in both directions and is written in Python.
+
+The code uses a set of predefined mappings between English letters and “ook" syllables. You can change the input file and language in the script itself. Example files are included.
