@@ -7,6 +7,8 @@ To handle this, the translator generates all possible human words for each “Oo
 
 Example data (text files) can be found in the data folder.
 
+> Note: This repository is used as an example for a workshop on open research software. It may not be actively maintained or regularly updated.
+
 ## Mapping of human sounds to orangutan sound groups
 
 | Human Letters | Ook Sound   |
