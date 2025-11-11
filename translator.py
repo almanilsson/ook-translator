@@ -1,4 +1,5 @@
 import re
+import os
 from wordfreq import zipf_frequency
 
 def translate_orangutang(file_path):
@@ -57,7 +58,9 @@ def translate_orangutang(file_path):
             translated_text += possible_word_list[0]
         translated_text += " "
     
-    output_file = open(file_path + "_translated.txt", "w", encoding="utf-8")
+    base, ext = os.path.splitext(file_path)
+    output_path = f"{base}_translated{ext}"
+    output_file = open(output_path, "w", encoding="utf-8")    
     output_file.write(translated_text)
     output_file.close()
 
@@ -94,7 +97,9 @@ def translate_human(file_path):
         else:
             translated_text += char
 
-    output_file = open(file_path + "_translated.txt", "w", encoding="utf-8")
+    base, ext = os.path.splitext(file_path)
+    output_path = f"{base}_translated{ext}"
+    output_file = open(output_path, "w", encoding="utf-8")
     output_file.write(translated_text)
     output_file.close()
 
