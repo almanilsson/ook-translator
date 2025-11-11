@@ -34,16 +34,16 @@ Clone the repository and install dependencies.
 
 ### Translate from human to orangutan
 
-Uncomment the section at the end of the script which calls the human translation function, fill in the filename, and run the script.
+Uncomment the section at the end of the script which calls the human translation function, fill in the file path, and run the script.
 ```python
-human("<YOURFILE>.txt")
+translate_human("<YOURFILE>.txt")
 ```
 
 ### Translate orangutan to human
 
-Uncomment the section at the end of the script which calls the orangutan translation function, fill in the filename, and run the script.
+Uncomment the section at the end of the script which calls the orangutan translation function, fill in the file path, and run the script.
 ```python
-orangutang("<YOURFILE>.txt")
+translate_orangutan("<YOURFILE>.txt")
 ```
 
 Translated files are saved in the same directory as the input with `_translated.txt` appended to the filename.
