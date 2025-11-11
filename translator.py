@@ -146,7 +146,3 @@ def translate_human(file_path):
     output_file = open(output_path, "w", encoding="utf-8")
     output_file.write(translated_text)
     output_file.close()
-
-# Example use
-# translate_orangutan("ok.txt")
-translate_human("example.txt")
