@@ -1,0 +1,19 @@
+cff-version: 0.1.0
+title: 'ook translator'
+message: >-
+  If you use this software, please cite it using the instructions in the GitHub repository, or the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Alma
+    family-names: Nilsson
+    affiliation: SciLifeLab, Sweden
+    orcid: 0009-0004-8501-642X
+repository-code: 'https://github.com/almanilsson/ook-translator'
+url: 'https://github.com/almanilsson/ook-translator'
+abstract: >-
+  Ook Translator is a Python tool that converts text between human language and the Librarian's “Ook”-based orangutan language from Terry Pratchett's Discworld.
+keywords:
+  - primates
+  - translation
+license: MIT
