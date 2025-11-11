@@ -1,19 +1,19 @@
 import re
 from wordfreq import zipf_frequency
 
-def orangutang(file):
-    f = open(file, "r", encoding="utf-8")
-    itxt = f.read()
-    f.close()
+def translate_orangutang(file_path):
+    input_file = open(file_path, "r", encoding="utf-8")
+    input_text = input_file.read()
+    input_file.close()
 
-    if "_" in itxt or "-" in itxt or "'" in itxt:
+    if "_" in input_text or "-" in input_text or "'" in input_text:
         raise ValueError("contains unhandled characters")
     
-    stxt = itxt.split(" ")
-    otxt = ""
+    input_words = input_text.split(" ")
+    translated_text = ""
 
-    for word in stxt:
-        map = {
+    for word in input_words:
+        translation_map = {
             "ok": list("AOU"),
             "ook": list("BP"),
             "okk": list("CSZ"),
@@ -28,46 +28,45 @@ def orangutang(file):
             "oOkK": list("R"),
         }
 
-        ooks = re.split(r"(?i)(?<=k)(?=o)", word)
-        ltr_list = [[] for i in range(len(ooks))]
+        ook_syllables = re.split(r"(?i)(?<=k)(?=o)", word)
+        char_options = [[] for i in range(len(ook_syllables))]
 
-        for i in range(len(ooks)):
-            for k, v in map.items():
-                if ooks[i] == k:
-                    ltr_list[i] = v
+        for i in range(len(ook_syllables)):
+            for ook_sound, char_group in translation_map.items():
+                if ook_syllables[i] == ook_sound:
+                    char_options[i] = char_group
 
-        def combine(ltr_list):
-            if len(ltr_list) == 1:
-                return ltr_list[0]
-            m = [a + b for a in ltr_list[0] for b in ltr_list[1]]
-            ltr_list = [m] + ltr_list[2:]
-            return combine(ltr_list)
-        comb = combine(ltr_list)
-        words = []
-        print(comb)
+        def combine_characters(char_list):
+            if len(char_list) == 1:
+                return char_list[0]
+            m = [a + b for a in char_list[0] for b in char_list[1]]
+            char_list = [m] + char_list[2:]
+            return combine_characters(char_list)
+        character_combinations = combine_characters(char_options)
+        possible_word_list = []
 
-        for a in comb:
-            if zipf_frequency(a, "en") > 0.0:
-                words.append(a)
+        for combination in character_combinations:
+            if zipf_frequency(combination, "en") > 0.0:
+                possible_word_list.append(combination)
 
-        if len(words) == 0:
-            otxt += "<no valid words>"
-        elif len(words) > 1:
-            otxt += "<" + ", ".join(words) + ">"
+        if len(possible_word_list) == 0:
+            translated_text += "<no valid words>"
+        elif len(possible_word_list) > 1:
+            translated_text += "<" + ", ".join(possible_word_list) + ">"
         else:
-            otxt += words[0]
-        otxt += " "
+            translated_text += possible_word_list[0]
+        translated_text += " "
     
-    o = open(file + "_translated.txt", "w", encoding="utf-8")
-    o.write(otxt)
-    o.close()
+    output_file = open(file_path + "_translated.txt", "w", encoding="utf-8")
+    output_file.write(translated_text)
+    output_file.close()
 
-def human(file):
-    f = open(file, "r", encoding="utf-8")
-    itxt = f.read()
-    f.close()
+def translate_human(file_path):
+    input_file = open(file_path, "r", encoding="utf-8")
+    input_text = input_file.read()
+    input_file.close()
 
-    map = {
+    translation_map = {
         "AOU": "ok",
         "BP": "ook",
         "CSZ": "okk",
@@ -82,23 +81,23 @@ def human(file):
         "R": "oOkK",
     }
 
-    otxt = ""
-    for c in itxt:
-        u = c.upper()
+    translated_text = ""
+    for char in input_text:
+        upper_char = char.upper()
         ook = None
-        for k, v in map.items():
-            if u in k:
-                ook = v
+        for char_group, ook_sound in translation_map.items():
+            if upper_char in char_group:
+                ook = ook_sound
                 break
         if ook:
-            otxt += ook
+            translated_text += ook
         else:
-            otxt += c
+            translated_text += char
 
-    o = open(file + "_translated.txt", "w", encoding="utf-8")
-    o.write(otxt)
-    o.close()
+    output_file = open(file_path + "_translated.txt", "w", encoding="utf-8")
+    output_file.write(translated_text)
+    output_file.close()
 
 
-# orangutang("ok.txt")
-human("example.txt")
+# translate_orangutan("ok.txt")
+translate_human("example.txt")
