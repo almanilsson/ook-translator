@@ -4,18 +4,51 @@ Ook Translator
 
 Translates text between human language and the Librarian's "ook" language
 from Terry Pratchetts Discworld.
-The script includes three functions:
-- combine_characters(): Recursively combines possible combinations of strings in a given list
-- translate_human(): converts human text to Orangutan
-- translate_orangutan(): converts Orangutan text to human
 
-Each function reads from a text file and writes the translation to a new file
-with "_translated" added to the filename.
+Functions:
+- combine_characters(): Recursively combines possible combinations of strings in a given list.
+- translate_human(): Converts human text to Orangutan.
+- translate_orangutan(): Converts Orangutan text to human.
+- read_text_file(): Reads and returns the content of a text file.
+- write_translated_text_file(): Writes translated text to a new file with "_translated" added.
+
+Constants:
+- OOK_TO_HUMAN: Mapping of Ook sound groups to human letter groups.
+- HUMAN_TO_OOK: Mapping of human letter groups to Ook sound groups.
 """
 
 import re
 import os
 from wordfreq import zipf_frequency
+
+OOK_TO_HUMAN = {
+    "ok": list("AOU"),
+    "ook": list("BP"),
+    "okk": list("CSZ"),
+    "Ok": list("DT"),
+    "oK": list("EIY"),
+    "ookk": list("FVW"),
+    "OK": list("GKQX"),
+    "Ookk": list("H"),
+    "oOkk": list("J"),
+    "oOKk": list("L"),
+    "OokK": list("MN"),
+    "oOkK": list("R"),
+}
+HUMAN_TO_OOK = {
+    "AOU": "ok",
+    "BP": "ook",
+    "CSZ": "okk",
+    "DT": "Ok",
+    "EIY": "oK",
+    "FVW": "ookk",
+    "GKQX": "OK",
+    "H": "Ookk",
+    "J": "oOkk",
+    "L": "oOKk",
+    "MN": "OokK",
+    "R": "oOkK",
+}
 
 
 def combine_characters(char_list):
@@ -31,6 +64,24 @@ def combine_characters(char_list):
     return combine_characters(char_list)
 
 
+def read_text_file(file_path):
+    """
+    Reads and returns the content of a text file.
+    """
+    with open(file_path, "r", encoding="utf-8") as f:
+        return f.read()
+
+
+def write_translated_text_file(file_path, content):
+    """
+    Writes translated text to a new file with "_translated" added.
+    """
+    base, ext = os.path.splitext(file_path)
+    output_path = f"{base}_translated{ext}"
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(content)
+
+
 def translate_orangutan(file_path):
     """
     Translate text from Orangutan language to human language.
@@ -41,8 +92,8 @@ def translate_orangutan(file_path):
 
     """
     # Read input file
-    with open(file_path, "r", encoding="utf-8") as input_file:
-        input_text = input_file.read()
+
+    input_text = read_text_file(file_path)
 
     # Stop if input contains unsupported characters
     if "_" in input_text or "-" in input_text or "'" in input_text:
@@ -52,22 +103,7 @@ def translate_orangutan(file_path):
     input_words = input_text.split(" ")
     translated_text = ""
 
-    # Translation map containing ook sounds and human letter group equivalents
     for word in input_words:
-        translation_map = {
-            "ok": list("AOU"),
-            "ook": list("BP"),
-            "okk": list("CSZ"),
-            "Ok": list("DT"),
-            "oK": list("EIY"),
-            "ookk": list("FVW"),
-            "OK": list("GKQX"),
-            "Ookk": list("H"),
-            "oOkk": list("J"),
-            "oOKk": list("L"),
-            "OokK": list("MN"),
-            "oOkK": list("R"),
-        }
 
         # Split word into sound groups based on where there is a "k" followed by an "o"
         # okok -> ok ok
@@ -76,7 +112,7 @@ def translate_orangutan(file_path):
         # Define list for possible character matches and map ook sound groups to letter options
         char_options = [[] for i in range(len(ook_syllables))]
         for i, syllable in enumerate(ook_syllables):
-            for ook_sound, char_group in translation_map.items():
+            for ook_sound, char_group in OOK_TO_HUMAN.items():
                 if syllable == ook_sound:
                     char_options[i] = char_group
 
@@ -99,10 +135,7 @@ def translate_orangutan(file_path):
         translated_text += " "
 
     # Write translated output to new file
-    base, ext = os.path.splitext(file_path)
-    output_path = f"{base}_translated{ext}"
-    with open(output_path, "r", encoding="utf-8") as output_file:
-        output_file.write(translated_text)
+    write_translated_text_file(file_path, translated_text)
 
 
 def translate_human(file_path):
@@ -116,24 +149,7 @@ def translate_human(file_path):
     """
 
     # Read input file
-    with open(file_path, "r", encoding="utf-8") as input_file:
-        input_text = input_file.read()
-
-    # Translation map containing human letter groups and ook sound equivalents
-    translation_map = {
-        "AOU": "ok",
-        "BP": "ook",
-        "CSZ": "okk",
-        "DT": "Ok",
-        "EIY": "oK",
-        "FVW": "ookk",
-        "GKQX": "OK",
-        "H": "Ookk",
-        "J": "oOkk",
-        "L": "oOKk",
-        "MN": "OokK",
-        "R": "oOkK",
-    }
+    input_text = read_text_file(file_path)
 
     translated_text = ""
 
@@ -141,7 +157,7 @@ def translate_human(file_path):
     for char in input_text:
         upper_char = char.upper()
         ook = None
-        for char_group, ook_sound in translation_map.items():
+        for char_group, ook_sound in HUMAN_TO_OOK.items():
             if upper_char in char_group:
                 ook = ook_sound
                 break
@@ -151,7 +167,4 @@ def translate_human(file_path):
             translated_text += char
 
     # Write translated output to new file
-    base, ext = os.path.splitext(file_path)
-    output_path = f"{base}_translated{ext}"
-    with open(output_path, "r", encoding="utf-8") as output_file:
-        output_file.write(translated_text)
+    write_translated_text_file(file_path, translated_text)
