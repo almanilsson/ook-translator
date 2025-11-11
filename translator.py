@@ -13,8 +13,16 @@ Functions:
 - write_translated_text_file(): Writes translated text to a new file with "_translated" added.
 
 Constants:
-- OOK_TO_HUMAN: Mapping of Ook sound groups to human letter groups.
-- HUMAN_TO_OOK: Mapping of human letter groups to Ook sound groups.
+- OOK_TO_HUMAN: Mapping of ook sound groups to human letter groups.
+- HUMAN_TO_OOK: Mapping of human letter groups to ook sound groups.
+
+File inputs and outputs:
+- Input: plain text files (.txt) encoded in UTF-8.
+    -For translate_human files should contain human language text (all characters).
+    - For translate_orangutan files should contain Orangutang text
+(connecting chearcters like "_", "-" or "'" are not ok).
+- Output: new plain text files written to the same directory, with "_translated"
+  added to the filename.
 """
 
 import re
@@ -51,10 +59,18 @@ HUMAN_TO_OOK = {
 }
 
 
-def combine_characters(char_list):
+def combine_characters(char_list: list[list[str]]) -> list[str]:
     """
     Recursively combines possible combinations of strings in a given list
     and returns a new list with said combinations.
+
+    Parameters
+    char_list : list
+        A list where each element is a list of possible characters or letter groups.
+
+    Returns
+    list
+        A list of all possible string combinations formed by combining the inner lists.
 
     """
     if len(char_list) == 1:
@@ -64,17 +80,31 @@ def combine_characters(char_list):
     return combine_characters(char_list)
 
 
-def read_text_file(file_path):
+def read_text_file(file_path: str) -> str:
     """
     Reads and returns the content of a text file.
+
+    Parameters
+    file_path : str
+        Path to the input text file to read. The file must be UTF-8 encoded.
+
+    Returns
+    str
+        The full text content of the file as a single string.
     """
     with open(file_path, "r", encoding="utf-8") as f:
         return f.read()
 
 
-def write_translated_text_file(file_path, content):
+def write_translated_text_file(file_path: str, content: str) -> None:
     """
     Writes translated text to a new file with "_translated" added.
+
+    Parameters
+    file_path : str
+        Path to the original input text file. Used to derive the output filename.
+    content : str
+        Translated text to be written to the new file.
     """
     base, ext = os.path.splitext(file_path)
     output_path = f"{base}_translated{ext}"
@@ -82,7 +112,7 @@ def write_translated_text_file(file_path, content):
         f.write(content)
 
 
-def translate_orangutan(file_path):
+def translate_orangutan(file_path: str) -> None:
     """
     Translate text from Orangutan language to human language.
 
@@ -90,6 +120,9 @@ def translate_orangutan(file_path):
     sound group to possible English letters, and writes the result to a new file.
     If multiple possible translations exist, they are shown in brackets.
 
+    Parameters
+    file_path : str
+        Path to the input text file containing Orangutan text.
     """
     # Read input file
 
@@ -138,14 +171,17 @@ def translate_orangutan(file_path):
     write_translated_text_file(file_path, translated_text)
 
 
-def translate_human(file_path):
+def translate_human(file_path: str) -> None:
     """
     Translate text from human language to Orangutan language.
 
     Reads an input text file in plain English, replaces each letter with the
     corresponding ook sound group, and writes the translated text to a new file.
-    Punctuation and characters without defined mappings are kept unchanged
-    (because Orangutans do not use those).
+    Punctuation and characters without defined mappings are kept unchanged.
+
+    Parameters
+    file_path : str
+        Path to the input text file containing human text.
     """
 
     # Read input file
