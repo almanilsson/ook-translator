@@ -3,17 +3,33 @@ Ook Translator
 --------------
 
 Translates text between human language and the Librarian's "ook" language
-from Terry Pratchetts Discworld. 
-The script includes two functions:
+from Terry Pratchetts Discworld.
+The script includes three functions:
+- combine_characters(): Recursively combines possible combinations of strings in a given list
 - translate_human(): converts human text to Orangutan
 - translate_orangutan(): converts Orangutan text to human
 
 Each function reads from a text file and writes the translation to a new file
 with "_translated" added to the filename.
 """
+
 import re
 import os
 from wordfreq import zipf_frequency
+
+
+def combine_characters(char_list):
+    """
+    Recursively combines possible combinations of strings in a given list
+    and returns a new list with said combinations.
+
+    """
+    if len(char_list) == 1:
+        return char_list[0]
+    m = [a + b for a in char_list[0] for b in char_list[1]]
+    char_list = [m] + char_list[2:]
+    return combine_characters(char_list)
+
 
 def translate_orangutan(file_path):
     """
@@ -25,9 +41,8 @@ def translate_orangutan(file_path):
 
     """
     # Read input file
-    input_file = open(file_path, "r", encoding="utf-8")
-    input_text = input_file.read()
-    input_file.close()
+    with open(file_path, "r", encoding="utf-8") as input_file:
+        input_text = input_file.read()
 
     # Stop if input contains unsupported characters
     if "_" in input_text or "-" in input_text or "'" in input_text:
@@ -54,23 +69,18 @@ def translate_orangutan(file_path):
             "oOkK": list("R"),
         }
 
-        # Split word into sound groups based on where there is a "k" followed by an "o": okok -> ok ok
+        # Split word into sound groups based on where there is a "k" followed by an "o"
+        # okok -> ok ok
         ook_syllables = re.split(r"(?i)(?<=k)(?=o)", word)
 
         # Define list for possible character matches and map ook sound groups to letter options
         char_options = [[] for i in range(len(ook_syllables))]
-        for i in range(len(ook_syllables)):
+        for i, syllable in enumerate(ook_syllables):
             for ook_sound, char_group in translation_map.items():
-                if ook_syllables[i] == ook_sound:
+                if syllable == ook_sound:
                     char_options[i] = char_group
 
         # Recursively combine possible letters into word candidates
-        def combine_characters(char_list):
-            if len(char_list) == 1:
-                return char_list[0]
-            m = [a + b for a in char_list[0] for b in char_list[1]]
-            char_list = [m] + char_list[2:]
-            return combine_characters(char_list)
         character_combinations = combine_characters(char_options)
         possible_word_list = []
 
@@ -91,9 +101,9 @@ def translate_orangutan(file_path):
     # Write translated output to new file
     base, ext = os.path.splitext(file_path)
     output_path = f"{base}_translated{ext}"
-    output_file = open(output_path, "w", encoding="utf-8")    
-    output_file.write(translated_text)
-    output_file.close()
+    with open(output_path, "r", encoding="utf-8") as output_file:
+        output_file.write(translated_text)
+
 
 def translate_human(file_path):
     """
@@ -101,13 +111,13 @@ def translate_human(file_path):
 
     Reads an input text file in plain English, replaces each letter with the
     corresponding ook sound group, and writes the translated text to a new file.
-    Punctuation and characters without defined mappings are kept unchanged because Orangutans do not use those.
+    Punctuation and characters without defined mappings are kept unchanged
+    (because Orangutans do not use those).
     """
 
     # Read input file
-    input_file = open(file_path, "r", encoding="utf-8")
-    input_text = input_file.read()
-    input_file.close()
+    with open(file_path, "r", encoding="utf-8") as input_file:
+        input_text = input_file.read()
 
     # Translation map containing human letter groups and ook sound equivalents
     translation_map = {
@@ -143,6 +153,5 @@ def translate_human(file_path):
     # Write translated output to new file
     base, ext = os.path.splitext(file_path)
     output_path = f"{base}_translated{ext}"
-    output_file = open(output_path, "w", encoding="utf-8")
-    output_file.write(translated_text)
-    output_file.close()
+    with open(output_path, "r", encoding="utf-8") as output_file:
+        output_file.write(translated_text)
