@@ -2,7 +2,7 @@ import re
 import os
 from wordfreq import zipf_frequency
 
-def translate_orangutang(file_path):
+def translate_orangutan(file_path):
     input_file = open(file_path, "r", encoding="utf-8")
     input_text = input_file.read()
     input_file.close()
