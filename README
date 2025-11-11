@@ -5,6 +5,8 @@ Each letter in human text is mapped to a specific “Ook” sound group. Transla
 
 To handle this, the translator generates all possible human words for each “Ook” sequence and compares them against an English dictionary (via [`wordfreq`](https://pypi.org/project/wordfreq/)) to identify real words.
 
+Example data (text files) can be found in the data folder.
+
 ## Mapping of human sounds to orangutan sound groups
 
 | Human Letters | Ook Sound   |
