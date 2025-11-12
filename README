@@ -32,7 +32,11 @@ Example data (text files) can be found in the data folder.
 - Python ≥ 3.9  
 - [`wordfreq`](https://pypi.org/project/wordfreq/)
 
-Clone the repository and install dependencies.
+Clone the repository and install the package from root using
+
+````bash
+pip install -e .
+```
 
 ## Usage
 
