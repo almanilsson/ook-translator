@@ -34,7 +34,7 @@ Example data (text files) can be found in the data folder.
 
 Clone the repository and install the package from root using
 
-````bash
+```bash
 pip install -e .
 ```
 
