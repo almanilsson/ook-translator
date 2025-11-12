@@ -36,18 +36,26 @@ Clone the repository and install dependencies.
 
 ## Usage
 
-### Translate from human to orangutan
+You can run the translator directly from the command line:
 
-Uncomment the section at the end of the script which calls the human translation function, fill in the file path, and run the script.
-```python
-translate_human("<YOURFILE>.txt")
+### CLI
+
+#### Translate from human to orangutan
+
+```bash
+python3 -m ook_translator data/<YOUR_FILE>.txt --language human
 ```
 
-### Translate orangutan to human
+#### Translate from orangutan to human
 
-Uncomment the section at the end of the script which calls the orangutan translation function, fill in the file path, and run the script.
+```bash
+python3 -m ook_translator data/<YOUR_FILE>.txt --language orangutan
+```
+
+### In Python
+
 ```python
-translate_orangutan("<YOURFILE>.txt")
+translate_human.translate_human("<YOUR_FILE>.txt", "<YOUR_OUTPUT_FILE>.txt")
 ```
 
 Translated files are saved in the same directory as the input with `_translated.txt` appended to the filename.
