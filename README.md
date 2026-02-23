@@ -86,7 +86,7 @@ This project is licensed under the [MIT License](./LICENSE).
 
 If you use or adapt ook translator, please cite it as:
 
-*Nilsson, A. (2026). ook-translator (Version 0.1.0) [Computer software]. Zenodo. [https://doi.org/10.5281/zenodo.18743024](https://doi.org/10.5281/zenodo.18743024)*
+*Nilsson, A. (2026). ook-translator (Version 1.0.0) [Computer software]. Zenodo. [https://doi.org/10.5281/zenodo.18743024](https://doi.org/10.5281/zenodo.18743024)*
 
 
 ## Acknowledgements
